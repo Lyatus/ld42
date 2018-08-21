@@ -1,0 +1,7 @@
+{
+  'pipeline ".inline?fragment=shader/color.frag&vertex=shader/box.vert"
+  'vertex_count 36
+  'vectors {
+    'color "white"
+  }
+}

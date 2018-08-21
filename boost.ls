@@ -1,0 +1,17 @@
+(set (self'type) 'boost)
+(set (self'start) (fun (do
+  (local extent (vec 8 8 8))
+  (self'entity'require-primitive || 'material || 'parent | "material/sphere.lon")
+  (self'entity'require-primitive || 'material || 'color | 'color "green")
+  (self'entity'require-primitive || 'scale | extent)
+  (self'entity'require-collider || 'sphere | 8)
+  (self'entity'require-rigidbody || 'kinematic | true)
+)))
+(set (self'update) (fun (do
+  (local transform (self'entity | 'require-transform |))
+	(transform'move-absolute | (vec 0 (* current-speed delta -1) 0))
+  (local position (transform'get-position|))
+	(local tp-distance (* 2 terrain-size terrain-cell-count))
+  (if (< (position'y|) (- terrain-size)) (transform'move-absolute | (vec 0 tp-distance 0)))
+  (if (and (not (self'decor)) (< race-distance (position'y|))) (entity-destroy (self'entity)))
+)))

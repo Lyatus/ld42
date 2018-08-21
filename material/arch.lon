@@ -1,0 +1,8 @@
+{
+  'pipeline ".inline?fragment=shader/staticmesh.frag&vertex=shader/staticmesh.vert"
+  'mesh "mesh/arch.obj"
+  'textures {
+    "tex" "texture/arch.png"
+    "mat_tex" "texture/default_mat.png"
+  }
+}

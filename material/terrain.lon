@@ -1,0 +1,12 @@
+(local size 128)
+{
+  'pipeline ".inline?fragment=shader/terrain.frag&vertex=shader/terrain.vert"
+  'vertex_count (* size size 6)
+  'textures {
+    'tex "texture/sand.png"
+    'height_tex "texture/sand_noise.jpg"
+  }
+  'scalars {
+    'size size
+  }
+}

@@ -1,0 +1,6 @@
+# Visual Studio
+*.ilk
+*.pdb
+# Engine artifacts
+data.bin
+trace.json
