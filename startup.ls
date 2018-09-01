@@ -96,6 +96,6 @@
 ))
 
 ; Engine setup
-(font-pipeline ".inline?fragment=shader/texture.frag&vertex=shader/font.vert&pass=present")
+(font-pipeline ".inline?fragment=shader/font.frag&vertex=shader/font.vert&pass=present")
 
 (engine-clear-and-read "menu.ls")
