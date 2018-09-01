@@ -3,7 +3,7 @@
   'pipeline ".inline?fragment=shader/terrain.frag&vertex=shader/terrain.vert"
   'vertex_count (* size size 6)
   'textures {
-    'tex "texture/sand.png"
+    'tex "texture/sand.png?comp=bc1"
     'height_tex "texture/sand_noise.jpg"
   }
   'scalars {

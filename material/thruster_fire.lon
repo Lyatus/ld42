@@ -2,7 +2,7 @@
   'pipeline ".inline?fragment=shader/staticmesh.frag&vertex=shader/staticmesh.vert&cull=none"
   'mesh "mesh/thruster_fire.obj"
   'textures {
-    "tex" "texture/thruster_fire.png"
+    "tex" "texture/thruster_fire.png?comp=bc3"
     "mat_tex" "texture/default_mat.png"
   }
 }

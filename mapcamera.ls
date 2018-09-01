@@ -72,7 +72,7 @@
 )))
 (set (self'gui) (fun (camera) (do
 	(local bg-scale (/ (window-width) 1920))
-	(camera'draw-image | 0 0 "texture/map.png" bg-scale)
+	(camera'draw-image | 0 0 "texture/map.png?comp=bc1" bg-scale)
 	(foreach i oasis oases (do
 		(local px (* (window-width) (oasis'x)))
 		(local py (* (window-height) (oasis'y)))
@@ -106,7 +106,7 @@
 		(if is-target 
 			(camera'draw-image | (- px 64) (- py 64) "texture/safezone.png"))
 	))
-	(camera'draw-image | (* (window-width) (- sandstorm-position 1)) 0 "texture/sandstorm.png" bg-scale)
+	(camera'draw-image | (* (window-width) (- sandstorm-position 1)) 0 "texture/sandstorm.png?comp=bc3" bg-scale)
 	(camera'draw-image | (- (/ (window-width) 2) 286) (- (window-height) 150) "texture/map_tuto.png")
 	(display-health camera)
 	(display-debug camera)

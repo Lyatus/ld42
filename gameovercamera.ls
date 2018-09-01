@@ -18,5 +18,5 @@
 )))
 (set (self'gui) (fun (camera) (do
 	(local bg-scale (/ (window-width) 1920))
-	(camera'draw-image | 0 0 (+ "texture/" (if victory "victory" "gameover") ".png") bg-scale)
+	(camera'draw-image | 0 0 (+ "texture/" (if victory "victory" "gameover") ".png?comp=bc1") bg-scale)
 )))

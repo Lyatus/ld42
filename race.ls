@@ -60,7 +60,7 @@
 (local sprite (entity-make))
 (sprite'require-transform || 'move | (vec 0 4096 0))
 (sprite'require-primitive || 'material || 'parent | "material/sprite.lon")
-(sprite'require-primitive || 'material || 'texture | 'tex "texture/sunset.png")
+(sprite'require-primitive || 'material || 'texture | 'tex "texture/sunset.png?comp=bc1")
 (sprite'require-primitive || 'scale | (vec (* 1920 4) 1 (* 1080 4)))
 
 (if (not menu) (do
