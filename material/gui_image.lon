@@ -1,0 +1,4 @@
+{
+  'pipeline ".inline?fragment=shader/texture.frag&vertex=shader/quad.vert&pass=present"
+  'vertex_count 6
+}

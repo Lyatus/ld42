@@ -1,4 +1,5 @@
 (set debug false)
+(set background-scale (max (/ (window-width) 1920) (/ (window-height) 1080)))
 
 ; Common functions
 (set rand-range (fun (min max) (+ min (* (- max min) (rand)))))
@@ -79,23 +80,47 @@
   (set race-start (now))
 	(engine-clear-and-read "race.ls")
 )))
-(set display-health (fun (camera) (do
-  (local i 0)
-  (while (< i 3) (do
-	  (camera'draw-image | (+ 86 (* i 45)) 57 (+ "texture/health_" (if (<= current-health i) "off" "on") ".png"))
-    (+= i 1)
+(set create-health-display (fun (entity) (do
+  (set health-gui {
+    0 (entity'add-gui|)
+    1 (entity'add-gui|)
+    2 (entity'add-gui|)
+  })
+  (foreach i gui health-gui (do
+    (gui'material || 'parent | "material/gui_image.lon")
+    (gui'offset | (+ 86 (* i 45)) 57)
+  ))
+  (change-health 0)
+)))
+(set change-health (fun (offset) (do
+  (set current-health (min base-health (+ current-health offset)))
+  (foreach i gui health-gui (do
+    (gui'material || 'texture | 'tex (+ "texture/health_" (if (<= current-health i) "off" "on") ".png?comp=bc3"))
   ))
 )))
-(set display-debug (fun (camera)
-  (if debug (camera'draw-text | ".pixel" 10 100
+(set create-debug-display (fun (entity) (do
+  (set debug-gui (entity'add-gui|))
+  (debug-gui'material || 'parent | "material/gui_text.lon")
+  (debug-gui'viewport-anchor | 0 1)
+  (debug-gui'anchor | 0 1)
+  (debug-gui'offset | 10 -10)
+)))
+(set display-debug (fun
+  (if debug (debug-gui'material || 'text |
     (+ "FPS: " (/ 1.0 delta) "\n"
-      "Frame: " avg-frame-work-duration "\n"
-      "Race distance: " race-distance "\n"
+      "Frame avg: " avg-frame-work-duration "\n"
+      "Frame max: " max-frame-work-duration "\n"
+      "Race dist: " race-distance "\n"
       "Race time: " (- (now) race-start) "\n"
-      "FINAL COUNTDOWN: " (- race-timer (- (now) race-start)) "\n")))
+      "Countdown: " (- race-timer (- (now) race-start)) "\n")))
 ))
-
-; Engine setup
-(font-pipeline ".inline?fragment=shader/font.frag&vertex=shader/font.vert&pass=present")
+(set create-background (fun (entity texture) (do
+  (local gui (entity'add-gui|))
+  (gui'material || 'parent | "material/gui_image.lon")
+  (gui'material || 'texture | 'tex texture)
+  (gui'viewport-anchor | 0.5 0.5)
+  (gui'anchor | 0.5 0.5)
+  (gui'scale | background-scale background-scale)
+)))
 
 (engine-clear-and-read "menu.ls")

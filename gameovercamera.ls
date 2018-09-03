@@ -2,6 +2,7 @@
   (set (self'camera) (self'entity | 'require-camera|))
 	(self'entity'require-audio-source || 'stream | (+ "audio/" (if victory "victory" "failure") ".ogg"))
 	(self'entity'require-audio-source || 'play|)
+	(create-background (self'entity) (+ "texture/" (if victory "victory" "gameover") ".png?comp=bc1"))
 )))
 (set (self'update) (fun (do
 	(foreach device _ (get-devices) (do
@@ -15,8 +16,4 @@
 			(engine-clear-and-read "menu.ls")
 		)
 	)
-)))
-(set (self'gui) (fun (camera) (do
-	(local bg-scale (/ (window-width) 1920))
-	(camera'draw-image | 0 0 (+ "texture/" (if victory "victory" "gameover") ".png?comp=bc1") bg-scale)
 )))

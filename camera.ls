@@ -3,6 +3,53 @@
 	(if (not menu) (set (self'vehicle-transform) (entity-get "vehicle" | 'require-transform|)))
   (set (self'camera) (self'entity'require-camera|))
 	(self'entity'require-audio-listener|)
+	(local gui)
+	(if menu (do
+		; Create background
+		(create-background (self'entity) "texture/startscreen.png?comp=bc3")
+		
+		; Create press start text
+		(set gui (self'entity'add-gui|))
+		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'texture | 'tex "texture/startscreen_pressstart.png")
+		(gui'viewport-anchor | 0.5 0.7)
+		(gui'anchor | 0.5 0.5)
+
+	) (do ; Race
+		; Create vignette
+		(create-background (self'entity) "texture/vignette.png?comp=bc3")
+
+		; Create timer
+		(set gui (self'entity'add-gui|))
+		(set (self'timer-gui) gui)
+		(gui'material || 'parent | "material/gui_text.lon")
+		(gui'material || 'font | "font/novaround.ttf?height=25")
+		(gui'viewport-anchor | 0.5 0)
+		(gui'anchor | 0.5 0)
+		(gui'offset | 0 62)
+
+		; Create race bar
+		(set gui (self'entity'add-gui|))
+		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'texture | 'tex "texture/race_bar.png?comp=bc3")
+		(gui'viewport-anchor | 0.5 0)
+		(gui'anchor | 0.5 0)
+		(gui'offset | 0 100)
+
+		; Create race arrow
+		(set gui (self'entity'add-gui|))
+		(set (self'arrow-gui) gui)
+		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'texture | 'tex "texture/race_arrow.png?comp=bc3")
+		(gui'viewport-anchor | 0.5 0)
+		(gui'anchor | 0.5 0)
+		(gui'offset | 0 100)
+
+		(create-health-display (self'entity))
+	))
+
+	; Create debug gui
+	(create-debug-display (self'entity))
 )))
 (set (self'late-update) (fun (do
 	; Update camera field of view to match current speed
@@ -21,7 +68,15 @@
 			(* vehicle-x 0.8)
 			0
 			(+ 10 (* (- vehicle-z 10) 0.5))))
+
+		; Update GUI
+		(local time-left (- race-timer (- (now) race-start)))
+		(local draw-timer (or (> time-left (time 6)) (> (% time-left 0.5) 0.25)))
+		(self'timer-gui'material || 'text | (if draw-timer (time-format time-left) ""))
+		(local progression (- 1 (/ race-distance race-start-distance)))
+		(self'arrow-gui'offset | (- (* progression 270) 140) 100)
 	))
+	(display-debug)
 )))
 (set (self'event) (fun (e) (do
 	(switch (e'type)
@@ -30,22 +85,4 @@
 			(if menu (engine-clear-and-read "map.ls"))
 		)
 	)
-)))
-(set (self'gui) (fun (camera) (do
-	(local bg-scale (/ (window-width) 1920))
-	(if menu (do
-		(camera'draw-image | 0 0 "texture/startscreen.png?comp=bc3" bg-scale)
-		(camera'draw-image | (- (* (window-width) 0.5) (* 212 bg-scale))  (* (window-height) 0.6) "texture/startscreen_pressstart.png" bg-scale)
-	) (do
-		(camera'draw-image | 0 0 "texture/vignette.png?comp=bc3" bg-scale)
-		(display-health camera)
-		(local half-width (/ (window-width) 2))
-		(local time-left (- race-timer (- (now) race-start)))
-		(local draw-timer (or (> time-left (time 6)) (> (% time-left 0.5) 0.25)))
-		(if draw-timer (camera'draw-text | "font/novaround.ttf?height=25" (- half-width 30) 62 (time-format time-left)))
-		(camera'draw-image | (- half-width 146) 100 "texture/race_bar.png")
-		(local progression (- 1 (/ race-distance race-start-distance)))
-		(camera'draw-image | (+ half-width -146 (* progression 270)) 100 "texture/race_arrow.png")
-	))
-	(display-debug camera)
 )))

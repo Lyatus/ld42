@@ -103,7 +103,7 @@
 		(local collider-type (e'other'entity || 'require-script || 'call | (fun (self'type))))
 		(switch collider-type
 			'obstacle (if (<= (self'immunity) 0) (do
-				(-= current-health 1)
+				(change-health -1)
 				(set (self'immunity) immunity-time)
 				(self'hit-sound'play|)
 				(if (<= current-health 0) (engine-clear-and-read "gameover.ls")) ; Go back to gameover when dead
