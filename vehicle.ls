@@ -3,7 +3,7 @@
 (set (self'roll) 0)
 (set (self'start) (fun (do
 	(self'entity'require-name || 'set | "vehicle")
-	(self'entity'require-primitive || 'material || 'parent | "material/spaceship.lon")
+	(self'entity'require-primitive || 'material || 'parent | "material/spaceship.ls")
 	(self'entity'require-primitive || 'scale | 0.2)
 	(self'entity'require-collider || 'box | (vec 1 1 1))
 	(self'entity'require-primitive || 'material || 'color | 'color immunity-color)
@@ -20,7 +20,7 @@
 	(local thruster-entity (entity-make))
 	(set (self'thruster-transform) (thruster-entity'require-transform|))
 	(set (self'thruster-primitive) (thruster-entity'require-primitive|))
-	(self'thruster-primitive'material || 'parent | "material/thruster_fire.lon")
+	(self'thruster-primitive'material || 'parent | "material/thruster_fire.ls")
 )))
 (set (self'update) (fun (do
 	; Movement values

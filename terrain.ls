@@ -1,5 +1,5 @@
 (set (self'start) (fun (do
-	(self'entity'require-primitive || 'material || 'parent | "material/terrain.lon")
+	(self'entity'require-primitive || 'material || 'parent | "material/terrain.ls")
 	(self'entity'require-primitive || 'scale | (vec terrain-size terrain-size 8))
 )))
 (set (self'update) (fun (do

@@ -1,4 +1,0 @@
-{
-  'pipeline ".inline?fragment=shader/emissive.frag&vertex=shader/fullscreen.vert&pass=light"
-  'vertex_count 3
-}

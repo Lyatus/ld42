@@ -10,7 +10,7 @@
 		
 		; Create press start text
 		(set gui (self'entity'add-gui|))
-		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'parent | "material/gui_image.ls")
 		(gui'material || 'texture | 'tex "texture/startscreen_pressstart.png")
 		(gui'viewport-anchor | 0.5 0.7)
 		(gui'anchor | 0.5 0.5)
@@ -22,7 +22,7 @@
 		; Create timer
 		(set gui (self'entity'add-gui|))
 		(set (self'timer-gui) gui)
-		(gui'material || 'parent | "material/gui_text.lon")
+		(gui'material || 'parent | "material/gui_text.ls")
 		(gui'material || 'font | "font/novaround.ttf?height=25")
 		(gui'viewport-anchor | 0.5 0)
 		(gui'anchor | 0.5 0)
@@ -30,7 +30,7 @@
 
 		; Create race bar
 		(set gui (self'entity'add-gui|))
-		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'parent | "material/gui_image.ls")
 		(gui'material || 'texture | 'tex "texture/race_bar.png?comp=bc3")
 		(gui'viewport-anchor | 0.5 0)
 		(gui'anchor | 0.5 0)
@@ -39,7 +39,7 @@
 		; Create race arrow
 		(set gui (self'entity'add-gui|))
 		(set (self'arrow-gui) gui)
-		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'parent | "material/gui_image.ls")
 		(gui'material || 'texture | 'tex "texture/race_arrow.png?comp=bc3")
 		(gui'viewport-anchor | 0.5 0)
 		(gui'anchor | 0.5 0)

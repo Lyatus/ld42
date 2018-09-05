@@ -1,7 +1,7 @@
 (set (self'type) 'boost)
 (set (self'start) (fun (do
   (local extent (vec 8 8 8))
-  (self'entity'require-primitive || 'material || 'parent | "material/sphere.lon")
+  (self'entity'require-primitive || 'material || 'parent | "material/sphere.ls")
   (self'entity'require-primitive || 'material || 'color | 'color "green")
   (self'entity'require-primitive || 'scale | extent)
   (self'entity'require-collider || 'sphere | 8)

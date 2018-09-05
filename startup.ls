@@ -87,7 +87,7 @@
     2 (entity'add-gui|)
   })
   (foreach i gui health-gui (do
-    (gui'material || 'parent | "material/gui_image.lon")
+    (gui'material || 'parent | "material/gui_image.ls")
     (gui'offset | (+ 86 (* i 45)) 57)
   ))
   (change-health 0)
@@ -100,7 +100,7 @@
 )))
 (set create-debug-display (fun (entity) (do
   (set debug-gui (entity'add-gui|))
-  (debug-gui'material || 'parent | "material/gui_text.lon")
+  (debug-gui'material || 'parent | "material/gui_text.ls")
   (debug-gui'viewport-anchor | 0 1)
   (debug-gui'anchor | 0 1)
   (debug-gui'offset | 10 -10)
@@ -116,7 +116,7 @@
 ))
 (set create-background (fun (entity texture) (do
   (local gui (entity'add-gui|))
-  (gui'material || 'parent | "material/gui_image.lon")
+  (gui'material || 'parent | "material/gui_image.ls")
   (gui'material || 'texture | 'tex texture)
   (gui'viewport-anchor | 0.5 0.5)
   (gui'anchor | 0.5 0.5)

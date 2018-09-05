@@ -18,14 +18,14 @@
 
 		(set gui (self'entity'add-gui|))
 		(set (oasis'gui) gui)
-		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'parent | "material/gui_image.ls")
 		(gui'material || 'texture | 'tex "texture/oasis.png?comp=bc3")
 		(gui'viewport-anchor | (oasis'x) (oasis'y))
 		(gui'anchor | 0.5 0.5)
 
 		(set gui (self'entity'add-gui|))
 		(set (oasis'heal-gui) gui)
-		(gui'material || 'parent | "material/gui_image.lon")
+		(gui'material || 'parent | "material/gui_image.ls")
 		(gui'viewport-anchor | (oasis'x) (oasis'y))
 		(gui'material || 'texture | 'tex "texture/no_heal.png")
 		(gui'anchor | 0.5 1)
@@ -33,7 +33,7 @@
 
 		(if (and is-attainable (not is-current) (not is-destroyed)) (do
 			(set gui (self'entity'add-gui|))
-			(gui'material || 'parent | "material/gui_text.lon")
+			(gui'material || 'parent | "material/gui_text.ls")
 			(gui'viewport-anchor | (oasis'x) (oasis'y))
 			(gui'anchor | 0.5 1)
 			(local duration (oasis-deadline oasis))
@@ -47,7 +47,7 @@
 
 		(if is-target (do
 			(set gui (self'entity'add-gui|))
-			(gui'material || 'parent | "material/gui_image.lon")
+			(gui'material || 'parent | "material/gui_image.ls")
 			(gui'material || 'texture | 'tex "texture/safezone.png")
 			(gui'viewport-anchor | (oasis'x) (oasis'y))
 			(gui'anchor | 0.5 1)
@@ -57,7 +57,7 @@
 
 	; Create sandstorm
 	(set gui (self'entity'add-gui|))
-	(gui'material || 'parent | "material/gui_image.lon")
+	(gui'material || 'parent | "material/gui_image.ls")
 	(gui'material || 'texture | 'tex "texture/sandstorm.png?comp=bc3")
 	(gui'viewport-anchor | sandstorm-position 0.5)
 	(gui'anchor | 1 0.5)
@@ -65,7 +65,7 @@
 
 	; Create tutorial
 	(set gui (self'entity'add-gui|))
-	(gui'material || 'parent | "material/gui_image.lon")
+	(gui'material || 'parent | "material/gui_image.ls")
 	(gui'material || 'texture | 'tex "texture/map_tuto.png?comp=bc3")
 	(gui'viewport-anchor | 0.5 0.95)
 	(gui'anchor | 0.5 1)
