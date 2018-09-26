@@ -23,10 +23,11 @@
 		(set gui (self'entity'add-gui|))
 		(set (self'timer-gui) gui)
 		(gui'material || 'parent | "material/gui_text.ls")
-		(gui'material || 'font | "font/novaround.ttf?height=25")
+		(gui'material || 'font | "font/novaround.ttf")
 		(gui'viewport-anchor | 0.5 0)
 		(gui'anchor | 0.5 0)
 		(gui'offset | 0 62)
+		(gui'scale | 25 25)
 
 		; Create race bar
 		(set gui (self'entity'add-gui|))
@@ -79,10 +80,8 @@
 	(display-debug)
 )))
 (set (self'event) (fun (e) (do
-	(switch (e'type)
-		'ButtonDown (switch (e'button)
-			'R (engine-clear-and-read "startup.ls")
-			(if menu (engine-clear-and-read "map.ls"))
-		)
-	)
+	(if (e'pressed) (switch (e'button)
+		'R (engine-clear-and-read "startup.ls")
+		(if menu (engine-clear-and-read "map.ls"))
+	))
 )))

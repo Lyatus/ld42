@@ -34,11 +34,9 @@
 
 	; Gather joystick input (based on X360 only)
 	(foreach device _ (get-devices) (do
-		(+= axis-x (device'get-axis | 0))
-		(-= axis-y (device'get-axis | 1))
-		(-= axis-z (device'get-axis | 2))
-		(+= axis-rot-x (device'get-axis | 3))
-		(-= axis-rot-y (device'get-axis | 4))
+		(+= axis-x (device'get-axis | 'GamepadLeftStickX))
+		(-= axis-z (device'get-axis | 'GamepadLeftTrigger))
+		(+= axis-z (device'get-axis | 'GamepadRightTrigger))
 	))
 
 	; Gather keyboard input

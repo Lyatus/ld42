@@ -104,6 +104,7 @@
   (debug-gui'viewport-anchor | 0 1)
   (debug-gui'anchor | 0 1)
   (debug-gui'offset | 10 -10)
+  (debug-gui'scale | 20 20)
 )))
 (set display-debug (fun
   (if debug (debug-gui'material || 'text |

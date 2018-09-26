@@ -43,6 +43,7 @@
 			(if is-target (-= duration-y-offset 40))
 			(gui'offset | 0 duration-y-offset)
 			(gui'material || 'text | duration-text)
+			(gui'scale | 20 20)
 		))
 
 		(if is-target (do
@@ -87,15 +88,12 @@
 	)))
 )))
 (set (self'event) (fun (e) (do
-	(switch (e'type)
-		'ButtonDown (switch (e'button)
-			'R (engine-clear-and-read "startup.ls")
-			'LeftButton (do
-				(if (>= selected-oasis 0)
-					(self'goto | selected-oasis))
-			)
-		)
-	)
+	(if (e'pressed) (switch (e'button)
+		'R (engine-clear-and-read "startup.ls")
+		'MouseLeft
+			(if (>= selected-oasis 0)
+				(self'goto | selected-oasis))
+	))
 )))
 (set (self'update) (fun (do
 	(local prev-selected-oasis selected-oasis)
@@ -109,6 +107,32 @@
 				(< (- px 16) (mouse-x) (+ px 16))
 				(< (- py 16) (mouse-y) (+ py 16)))
 			(set selected-oasis i))
+	))
+
+	; Gather joystick input
+	(local axis-x 0)
+	(local axis-y 0)
+	(local button-pressed false)
+	(foreach device _ (get-devices) (do
+		(+= axis-x (device'get-axis | 'GamepadLeftStickX))
+		(-= axis-y (device'get-axis | 'GamepadLeftStickY)) ; Invert because stick Y+ is up
+		(set button-pressed (or button-pressed (device'get-button | 'GamepadFaceBottom)))
+	))
+	(local joy-dir (normalize (vec axis-x axis-y 0)))
+	(if (> (length joy-dir) 0) (do
+		(local best-value 0)
+		(foreach i oasis oases (if (<> current-oasis i) (do
+			(local dx (- (oasis'x) (oases current-oasis 'x)))
+			(local dy (- (oasis'y) (oases current-oasis 'y)))
+			(local value (dot joy-dir (normalize (vec dx dy 0))))
+			(if (and
+					(> value best-value)
+					(< (oasis-distance (oases current-oasis) oasis) oasis-max-distance)) (do
+				(set selected-oasis i)
+				(set best-value value)))
+		)))
+		(if (and button-pressed (>= selected-oasis 0))
+			(self'goto | selected-oasis))
 	))
 
 	; Update oases GUIs
@@ -136,32 +160,6 @@
 		))
 	))
 	
-	; Gather joystick input
-	(local axis-x 0)
-	(local axis-y 0)
-	(local button-pressed false)
-	(foreach device _ (get-devices) (do
-		(+= axis-x (device'get-axis | 0))
-		(+= axis-y (device'get-axis | 1))
-		(set button-pressed (or button-pressed (device'get-button | 0)))
-	))
-	(local joy-dir (normalize (vec axis-x axis-y 0)))
-	(if (> (length joy-dir) 0) (do
-		(local best-value 0)
-		(foreach i oasis oases (if (<> current-oasis i) (do
-			(local dx (- (oasis'x) (oases current-oasis 'x)))
-			(local dy (- (oasis'y) (oases current-oasis 'y)))
-			(local value (dot joy-dir (normalize (vec dx dy 0))))
-			(if (and
-					(> value best-value)
-					(< (oasis-distance (oases current-oasis) oasis) oasis-max-distance)) (do
-				(set selected-oasis i)
-				(set best-value value)))
-		)))
-		(if (and button-pressed (>= selected-oasis 0))
-			(self'goto | selected-oasis))
-	))
-
 	; Play interaction sounds
 	(if (and (>= selected-oasis 0) (<> selected-oasis prev-selected-oasis))
 		(self'ui-hover-sound'play|))
