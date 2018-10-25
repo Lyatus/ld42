@@ -4,12 +4,12 @@
 (generate-oases)
 
 ; Start intro music
-(local music-source (entity-make | 'add-audio-source|))
-(music-source'stream | "audio/intro.ogg")
-(music-source'looping | true)
-(music-source'play|)
+(local music-source (entity-make|.add-audio-source))
+(music-source.stream "audio/intro.ogg")
+(music-source.looping true)
+(music-source.play)
 
 (set menu true)
 (set race-distance 256)
 (set current-speed base-speed)
-(read "race.ls")
+(read "race.ls"|)

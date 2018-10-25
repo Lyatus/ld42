@@ -51,27 +51,27 @@
     (local oasis (generate-oasis))
     (while (not (oasis-is-compliant oasis))
       (set oasis (generate-oasis)))
-    (set (oases i) oasis)
+    (set oases:i oasis)
     
-    (if (< (oases i 'x) (oases current-oasis 'x)) (set current-oasis i)) ; Current oasis is leftmost
-    (if (> (oases i 'x) (oases target-oasis 'x)) (set target-oasis i)) ; Target oasis is rightmost
+    (if (< oases:i.x oases:current-oasis.x) (set current-oasis i)) ; Current oasis is leftmost
+    (if (> oases:i.x oases:target-oasis.x) (set target-oasis i)) ; Target oasis is rightmost
 
     (+= i 1)
   ))
-  (set (oases current-oasis 'heal) 0)
-  (set (oases target-oasis 'heal) 0)
+  (set oases:current-oasis.heal 0)
+  (set oases:target-oasis.heal 0)
 )))
 (set oasis-distance (fun (a b) (do
-	(local xdiff (- (a'x) (b'x)))
-	(local ydiff (- (a'y) (b'y)))
+	(local xdiff (- a.x b.x))
+	(local ydiff (- a.y b.y))
 	(sqrt (+ (* xdiff xdiff) (* ydiff ydiff)))
 )))
 (set oasis-deadline (fun (oasis) (do
-  (time (/ (abs (- (oasis'x) sandstorm-position)) sandstorm-speed))
+  (time (/ (abs (- oasis.x sandstorm-position)) sandstorm-speed))
 )))
 (set goto-oasis (fun (i) (do
-	(local start-oasis (oases current-oasis))
-	(local end-oasis (oases i))
+	(local start-oasis oases:current-oasis)
+	(local end-oasis oases:i)
 	(local distance (oasis-distance start-oasis end-oasis))
 	(set race-start-distance (* distance unit-per-pixel))
 	(set race-distance (* distance unit-per-pixel))
@@ -82,32 +82,32 @@
 )))
 (set create-health-display (fun (entity) (do
   (set health-gui {
-    0 (entity'add-gui|)
-    1 (entity'add-gui|)
-    2 (entity'add-gui|)
+    0 (entity.add-gui)
+    1 (entity.add-gui)
+    2 (entity.add-gui)
   })
   (foreach i gui health-gui (do
-    (gui'material || 'parent | "material/gui_image.ls")
-    (gui'offset | (+ 86 (* i 45)) 57)
+    (gui.material|.parent "material/gui_image.ls")
+    (gui.offset (+ 86 (* i 45)) 57)
   ))
   (change-health 0)
 )))
 (set change-health (fun (offset) (do
   (set current-health (min base-health (+ current-health offset)))
   (foreach i gui health-gui (do
-    (gui'material || 'texture | 'tex (+ "texture/health_" (if (<= current-health i) "off" "on") ".png?comp=bc3"))
+    (gui.material|.texture 'tex (+ "texture/health_" (if (<= current-health i) "off" "on") ".png?comp=bc3"))
   ))
 )))
 (set create-debug-display (fun (entity) (do
-  (set debug-gui (entity'add-gui|))
-  (debug-gui'material || 'parent | "material/gui_text.ls")
-  (debug-gui'viewport-anchor | 0 1)
-  (debug-gui'anchor | 0 1)
-  (debug-gui'offset | 10 -10)
-  (debug-gui'scale | 20 20)
+  (set debug-gui (entity.add-gui))
+  (debug-gui.material|.parent "material/gui_text.ls")
+  (debug-gui.viewport-anchor 0 1)
+  (debug-gui.anchor 0 1)
+  (debug-gui.offset 10 -10)
+  (debug-gui.scale 20 20)
 )))
 (set display-debug (fun
-  (if debug (debug-gui'material || 'text |
+  (if debug (debug-gui.material|.text
     (+ "FPS: " (/ 1.0 delta) "\n"
       "Frame avg: " avg-frame-work-duration "\n"
       "Frame max: " max-frame-work-duration "\n"
@@ -116,12 +116,12 @@
       "Countdown: " (- race-timer (- (now) race-start)) "\n")))
 ))
 (set create-background (fun (entity texture) (do
-  (local gui (entity'add-gui|))
-  (gui'material || 'parent | "material/gui_image.ls")
-  (gui'material || 'texture | 'tex texture)
-  (gui'viewport-anchor | 0.5 0.5)
-  (gui'anchor | 0.5 0.5)
-  (gui'scale | background-scale background-scale)
+  (local gui (entity.add-gui))
+  (gui.material|.parent "material/gui_image.ls")
+  (gui.material|.texture 'tex texture)
+  (gui.viewport-anchor 0.5 0.5)
+  (gui.anchor 0.5 0.5)
+  (gui.scale background-scale background-scale)
 )))
 
 (engine-clear-and-read "menu.ls")
