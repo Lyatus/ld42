@@ -1,4 +1,5 @@
 (set self.start (fun (do
+  (self.entity.require-name|.set "camera")
   (set self.transform (self.entity.require-transform))
   (if (not menu) (set self.vehicle-transform (entity-get "vehicle" |.require-transform)))
   (set self.camera (self.entity.require-camera))
@@ -15,6 +16,8 @@
     (gui.viewport-anchor 0.5 0.7)
     (gui.anchor 0.5 0.5)
 
+    ; Place camera
+    (self.transform.set-position (vec 0 0 15))
   ) (do ; Race
     ; Create vignette
     (create-background self.entity "texture/vignette.png?comp=bc3")
@@ -54,21 +57,17 @@
 )))
 (set self.late-update (fun (do
   ; Update camera field of view to match current speed
-  (self.camera.perspective (+ 60 (* current-speed 0.085)) 1 4096) ; TWEAK: Relation between speed and FOV
+  (self.camera.perspective (+ 60 (* current-speed 0.085)) 3 4150) ; TWEAK: Relation between speed and FOV
 
   (if menu (do
-    (foreach device _ (get-devices) (do
-      (if (device.get-button 7) (engine-clear-and-read "map.ls"))
-    ))
-    (self.transform.set-position (vec 0 0 15))
+    (self.transform.move-absolute (vec 0 (* current-speed delta) 0))
   ) (do
     ; Set camera position relative to vehicle
-    (local vehicle-x (self.vehicle-transform.get-position|.x))
-    (local vehicle-z (self.vehicle-transform.get-position|.z))
+    (local vehicle-pos (self.vehicle-transform.get-position))
     (self.transform.set-position (vec
-      (* vehicle-x 0.8)
-      0
-      (+ 10 (* (- vehicle-z 10) 0.5))))
+      (* (vehicle-pos.x) 0.8)
+      (- (vehicle-pos.y) 10)
+      (+ 10 (* (- (vehicle-pos.z) 10) 0.5))))
 
     ; Update GUI
     (local time-left (- race-timer (- (now) race-start)))

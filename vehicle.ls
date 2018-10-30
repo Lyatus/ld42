@@ -25,7 +25,7 @@
 (set self.update (fun (do
   ; Movement values
   (local transform (self.entity.require-transform))
-  (local movement (* real-delta 128))
+  (local movement (* delta 128))
   (local axis-x 0)
   (local axis-y 0)
   (local axis-z 0)
@@ -57,6 +57,9 @@
   (-= self.boost delta)
   (if (> self.immunity -1)
     (set current-speed (min current-speed (+ base-speed (* 128 (max 0 (- self.immunity)))))))
+
+  ; Move forward
+  (transform.move-absolute (vec 0 (* current-speed delta) 0))
 
   ; Update race distance
   (-= race-distance (* delta current-speed))
@@ -97,19 +100,11 @@
   (if (> self.immunity 0) (self.thruster-primitive.scale 0))
 )))
 (set self.event (fun (e) (do
-  (if (= e.type 'COLLISION) (do
-    (local collider-type (e.other.entity|.require-script|.call (fun self.type)))
-    (switch collider-type
-      'obstacle (if (<= self.immunity 0) (do
-        (change-health -1)
-        (set self.immunity immunity-time)
-        (self.hit-sound.play)
-        (if (<= current-health 0) (engine-clear-and-read "gameover.ls")) ; Go back to gameover when dead
-        (entity-destroy (e.other.entity))
-      ))
-      'boost (do
-        (set self.boost boost-time)
-      )
-    )
+  (if (and (= e.type 'COLLISION) (<= self.immunity 0)) (do
+    (change-health -1)
+    (set self.immunity immunity-time)
+    (self.hit-sound.play)
+    (if (<= current-health 0) (engine-clear-and-read "gameover.ls")) ; Go back to gameover when dead
+    (entity-destroy (e.other.entity))
   ))
 )))

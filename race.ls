@@ -1,9 +1,10 @@
 ; Terrain variables
 (set terrain-size 128)
-(set terrain-cell-count 32)
+(set terrain-cell-count (+ (/ race-distance terrain-size 2) 6))
 
 ; Obstacle variables
-(set obstacle-count 128)
+(set obstacle-per-cell (if menu 2 4))
+(set obstacle-count (* terrain-cell-count obstacle-per-cell))
 (set boost-count 0)
 
 ; Make directional light
@@ -23,47 +24,6 @@
 (amblight-entity.require-primitive|.material|.parent "material/ssao.ls")
 (amblight-entity.require-primitive|.material|.color 'color ambient-color)
 (amblight-entity.require-primitive|.scale 99999)
-
-; Make terrain cells
-(local i 0)
-(while (< i terrain-cell-count) (do
-  (local terrain-entity (entity-make))
-  (terrain-entity.require-transform|.move (vec 0 (* terrain-size i 2) 0))
-  (terrain-entity.require-script|.load "terrain.ls")
-  (+= i 1)
-))
-
-; Make obstacles
-(local i 0)
-(while (< i obstacle-count) (do
-  (local obstacle-entity (entity-make))
-  (obstacle-entity.require-transform|.move 
-    (vec
-      (rand-range (- terrain-size) terrain-size)
-      (+ (* terrain-cell-count (rand-range 0 terrain-size) 2) (* 2 terrain-size))
-      0))
-  (obstacle-entity.require-transform|.rotate (vec (- (rand) 0.2) (- (rand) 0.2) (- (rand) 0.5)) (rand))
-  (obstacle-entity.require-primitive|.material|.parent "material/rock.ls")
-
-  ; Handle rock variations
-  (local variant (floor (rand-range 1 4)))
-  (local mesh-path (+ "mesh/rock_" variant ".obj"))
-  (obstacle-entity.require-primitive|.material|.mesh mesh-path)
-  (local extent (vec 8 8 32))
-  (obstacle-entity.require-collider|.box extent)
-  (obstacle-entity.require-rigidbody|.kinematic true)
-  (obstacle-entity.require-script|.load "obstacle.ls")
-
-  (+= i 1)
-))
-
-; Make background
-(local sprite (entity-make))
-(sprite.require-transform|.move (vec 0 4096 0))
-(sprite.require-primitive|.material|.parent "material/sprite.ls")
-(sprite.require-primitive|.material|.texture 'tex "texture/sunset.png?comp=bc1")
-(sprite.require-primitive|.scale (vec (* 1920 4) 1 (* 1080 4)))
-
 (if (not menu) (do
   ; Make end race arch
   (local arch-entity (entity-make))
@@ -71,8 +31,6 @@
   (arch-entity.require-transform|.rotate (vec 0 0 1) (/ 3.14 2))
   (arch-entity.add-primitive|.material|.parent "material/arch.ls")
   (arch-entity.add-primitive|.material|.parent "material/arch_rocks.ls")
-  (arch-entity.require-script|.load "obstacle.ls")
-  (arch-entity.require-script|.call (fun (set self.decor true)))
 
   ; Make ship
   (local vehicle-entity (entity-make))
@@ -99,4 +57,72 @@
   (music-source.play)
 ))
 
+; Make camera
 (entity-make|.add-script|.load "camera.ls")
+
+; Infinite roll for menu
+(local loop-objects {})
+(if menu (entity-make|.require-script|.call (fun (loop-objects) (do
+  (set self.loop-objects loop-objects)
+  (set self.camera (entity-get "camera" |.require-transform))
+  (set self.update (fun (do
+    (foreach loop-object _ self.loop-objects (do
+      (if (< (+ terrain-size (loop-object.get-position|.y)) (self.camera.get-position|.y))
+        (loop-object.move-absolute (vec 0 race-distance 0)))
+    ))
+  )))
+)) loop-objects))
+
+; Make terrain cells
+(local i 0)
+(while (< i terrain-cell-count) (do
+  (local terrain-entity (entity-make))
+  (local terrain-transform (terrain-entity.require-transform))
+  (terrain-transform.move (vec 0 (* terrain-size i 2) 0))
+  (terrain-entity.require-primitive|.material|.parent "material/terrain.ls")
+  (terrain-entity.require-primitive|.scale (vec terrain-size terrain-size 8))
+  (set loop-objects:terrain-transform true)
+  (+= i 1)
+))
+
+; Make obstacles
+(local i 0)
+(local obstacle-y-min 0)
+(local obstacle-y-max race-distance)
+(if (not menu) (do
+  (+= obstacle-y-min (* 2 terrain-size))
+  (-= obstacle-y-max (* 2 terrain-size))
+))
+(while (< i obstacle-count) (do
+  (local obstacle-entity (entity-make))
+  (obstacle-entity.require-transform|.move 
+    (vec
+      (rand-range (- terrain-size) terrain-size)
+      (rand-range obstacle-y-min obstacle-y-max)
+      0))
+  (obstacle-entity.require-transform|.rotate (vec (- (rand) 0.2) (- (rand) 0.2) (- (rand) 0.5)) (rand))
+  (obstacle-entity.require-primitive|.material|.parent "material/rock.ls")
+  (local obstacle-transform (obstacle-entity.require-transform))
+  (set loop-objects:obstacle-transform true)
+
+  ; Handle rock variations
+  (local variant (floor (rand-range 1 4)))
+  (local mesh-path (+ "mesh/rock_" variant ".obj"))
+  (obstacle-entity.require-primitive|.material|.mesh mesh-path)
+  (local extent (vec 8 8 32))
+  (obstacle-entity.require-collider|.box extent)
+  (obstacle-entity.require-rigidbody|.kinematic true)
+
+  (+= i 1)
+))
+
+; Make background
+(local sprite (entity-make))
+(sprite.require-transform|.move (vec 0 4096 0))
+(sprite.require-primitive|.material|.parent "material/sprite.ls")
+(sprite.require-primitive|.material|.texture 'tex "texture/sunset.png?comp=bc1")
+(sprite.require-primitive|.scale (vec (* 1920 4) 1 (* 1080 4)))
+; Continuously move background with vehicle
+(sprite.require-script|.call (fun (set self.update (fun
+  (self.entity.require-transform|.move-absolute (vec 0 (* current-speed delta) 0))
+))))

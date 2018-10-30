@@ -10,6 +10,6 @@
 (music-source.play)
 
 (set menu true)
-(set race-distance 256)
+(set race-distance 4096)
 (set current-speed base-speed)
 (read "race.ls"|)
