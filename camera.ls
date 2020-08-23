@@ -52,6 +52,12 @@
     (create_health_display self.entity)
   ))
 
+  ; Create present material
+  (self.camera.present_material|.shader 'fragment "shader/present.frag")
+  (self.camera.present_material|.shader 'vertex "shader/fullscreen.vert")
+  (self.camera.present_material|.render_pass 'present)
+  (self.camera.present_material|.vertex_count 3)
+
   ; Create debug gui
   (create_debug_display self.entity)
 )))
