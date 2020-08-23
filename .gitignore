@@ -2,6 +2,7 @@
 *.ilk
 *.pdb
 # Engine artifacts
+imgui.ini
 logs/
 data.bin
 dev.bin
