@@ -1,5 +1,5 @@
 (self.shader 'fragment "shader/staticmesh.frag")
 (self.shader 'vertex "shader/staticmesh.vert")
-(self.mesh "mesh/arch_rocks.obj")
+(self.mesh "mesh/arch_rocks.obj?fmt=pun")
 (self.texture 'tex "texture/rocks.png?comp=bc1")
 (self.texture 'mat_tex "texture/default_mat.png")
