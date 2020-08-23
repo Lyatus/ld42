@@ -2,5 +2,7 @@
 *.ilk
 *.pdb
 # Engine artifacts
+logs/
 data.bin
+dev.bin
 trace.json
