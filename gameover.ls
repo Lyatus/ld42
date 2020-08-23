@@ -1,1 +1,1 @@
-(entity-make|.add-script|.load "gameovercamera.ls")
+(entity_make|.add_script|.load "gameovercamera.ls")

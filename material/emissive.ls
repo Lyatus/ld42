@@ -1,2 +1,2 @@
 (self.pipeline ".inline?fragment=shader/emissive.frag&vertex=shader/fullscreen.vert&pass=light")
-(self.vertex-count 3)
+(self.vertex_count 3)

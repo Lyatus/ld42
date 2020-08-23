@@ -1,128 +1,128 @@
 ; Terrain variables
-(set terrain-size 128)
-(set terrain-cell-count (+ (/ race-distance terrain-size 2) 6))
+(set terrain_size 128)
+(set terrain_cell_count (+ (/ race_distance terrain_size 2) 6))
 
 ; Obstacle variables
-(set obstacle-per-cell (if menu 2 4))
-(set obstacle-count (* terrain-cell-count obstacle-per-cell))
-(set boost-count 0)
+(set obstacle_per_cell (if menu 2 4))
+(set obstacle_count (* terrain_cell_count obstacle_per_cell))
+(set boost_count 0)
 
 ; Make directional light
-(local dirlight-entity (entity-make))
-(dirlight-entity.require-transform|.rotate (vec -0.4 0 1) 2.25)
-(dirlight-entity.require-primitive|.material|.parent "material/dirlight.ls")
-(dirlight-entity.require-primitive|.material|.scalar 'intensity light-intensity)
-(dirlight-entity.require-primitive|.scale 99999)
+(local dirlight_entity (entity_make))
+(dirlight_entity.require_transform|.rotate (vec -0.4 0 1) 2.25)
+(dirlight_entity.require_primitive|.material|.parent "material/dirlight.ls")
+(dirlight_entity.require_primitive|.material|.scalar 'intensity light_intensity)
+(dirlight_entity.require_primitive|.scale 99999)
 
 ; Make emissive light
-(local emissive-entity (entity-make))
-(emissive-entity.require-primitive|.material|.parent "material/emissive.ls")
-(emissive-entity.require-primitive|.scale 99999)
+(local emissive_entity (entity_make))
+(emissive_entity.require_primitive|.material|.parent "material/emissive.ls")
+(emissive_entity.require_primitive|.scale 99999)
 
 ; Make ambient light
-(local amblight-entity (entity-make))
-(amblight-entity.require-primitive|.material|.parent "material/ssao.ls")
-(amblight-entity.require-primitive|.material|.color 'color ambient-color)
-(amblight-entity.require-primitive|.scale 99999)
+(local amblight_entity (entity_make))
+(amblight_entity.require_primitive|.material|.parent "material/ssao.ls")
+(amblight_entity.require_primitive|.material|.color 'color ambient_color)
+(amblight_entity.require_primitive|.scale 99999)
 (if (not menu) (do
   ; Make end race arch
-  (local arch-entity (entity-make))
-  (arch-entity.require-transform|.move (vec 0 (+ race-distance 32) 0))
-  (arch-entity.require-transform|.rotate (vec 0 0 1) (/ 3.14 2))
-  (arch-entity.add-primitive|.material|.parent "material/arch.ls")
-  (arch-entity.add-primitive|.material|.parent "material/arch_rocks.ls")
+  (local arch_entity (entity_make))
+  (arch_entity.require_transform|.move (vec 0 (+ race_distance 32) 0))
+  (arch_entity.require_transform|.rotate (vec 0 0 1) (/ 3.14 2))
+  (arch_entity.add_primitive|.material|.parent "material/arch.ls")
+  (arch_entity.add_primitive|.material|.parent "material/arch_rocks.ls")
 
   ; Make ship
-  (local vehicle-entity (entity-make))
-  (vehicle-entity.require-transform|.move (vec 0 10 4))
-  (vehicle-entity.require-script|.load "vehicle.ls")
+  (local vehicle_entity (entity_make))
+  (vehicle_entity.require_transform|.move (vec 0 10 4))
+  (vehicle_entity.require_script|.load "vehicle.ls")
 
   ; Make boosts
   (local i 0)
-  (while (< i boost-count) (do
-    (local boost-entity (entity-make))
-    (boost-entity.require-transform|.move 
+  (while (< i boost_count) (do
+    (local boost_entity (entity_make))
+    (boost_entity.require_transform|.move
       (vec
-        (rand-range (- terrain-size) terrain-size)
-        (+ (* terrain-cell-count (rand-range 0 terrain-size) 2) (* 2 terrain-size))
+        (rand_range (- terrain_size) terrain_size)
+        (+ (* terrain_cell_count (rand_range 0 terrain_size) 2) (* 2 terrain_size))
         5))
-    (boost-entity.require-script|.load "boost.ls")
+    (boost_entity.require_script|.load "boost.ls")
     (+= i 1)
   ))
 
   ; Start race music
-  (local music-source (entity-make|.add-audio-source))
-  (music-source.stream "audio/race.ogg")
-  (music-source.looping true)
-  (music-source.play)
+  (local music_source (entity_make|.add_audio_source))
+  (music_source.stream "audio/race.ogg")
+  (music_source.looping true)
+  (music_source.play)
 ))
 
 ; Make camera
-(entity-make|.add-script|.load "camera.ls")
+(entity_make|.add_script|.load "camera.ls")
 
 ; Infinite roll for menu
-(local loop-objects {})
-(if menu (entity-make|.require-script|.call (fun (loop-objects) (do
-  (set self.loop-objects loop-objects)
-  (set self.camera (entity-get "camera" |.require-transform))
+(local loop_objects {})
+(if menu (entity_make|.require_script|.call (fun loop_objects (do
+  (set self.loop_objects loop_objects)
+  (set self.camera (entity_get "camera" |.require_transform))
   (set self.update (fun (do
-    (foreach loop-object _ self.loop-objects (do
-      (if (< (+ terrain-size (loop-object.get-position|.y)) (self.camera.get-position|.y))
-        (loop-object.move-absolute (vec 0 race-distance 0)))
+    (foreach loop_object _ self.loop_objects (do
+      (if (< (+ terrain_size (loop_object.get_position|.y)) (self.camera.get_position|.y))
+        (loop_object.move_absolute (vec 0 race_distance 0)))
     ))
   )))
-)) loop-objects))
+)) loop_objects))
 
 ; Make terrain cells
 (local i 0)
-(while (< i terrain-cell-count) (do
-  (local terrain-entity (entity-make))
-  (local terrain-transform (terrain-entity.require-transform))
-  (terrain-transform.move (vec 0 (* terrain-size i 2) 0))
-  (terrain-entity.require-primitive|.material|.parent "material/terrain.ls")
-  (terrain-entity.require-primitive|.scale (vec terrain-size terrain-size 8))
-  (set loop-objects:terrain-transform true)
+(while (< i terrain_cell_count) (do
+  (local terrain_entity (entity_make))
+  (local terrain_transform (terrain_entity.require_transform))
+  (terrain_transform.move (vec 0 (* terrain_size i 2) 0))
+  (terrain_entity.require_primitive|.material|.parent "material/terrain.ls")
+  (terrain_entity.require_primitive|.scale (vec terrain_size terrain_size 8))
+  (set loop_objects:terrain_transform true)
   (+= i 1)
 ))
 
 ; Make obstacles
 (local i 0)
-(local obstacle-y-min 0)
-(local obstacle-y-max race-distance)
+(local obstacle_y_min 0)
+(local obstacle_y_max race_distance)
 (if (not menu) (do
-  (+= obstacle-y-min (* 2 terrain-size))
-  (-= obstacle-y-max (* 2 terrain-size))
+  (+= obstacle_y_min (* 2 terrain_size))
+  (-= obstacle_y_max (* 2 terrain_size))
 ))
-(while (< i obstacle-count) (do
-  (local obstacle-entity (entity-make))
-  (obstacle-entity.require-transform|.move 
+(while (< i obstacle_count) (do
+  (local obstacle_entity (entity_make))
+  (obstacle_entity.require_transform|.move
     (vec
-      (rand-range (- terrain-size) terrain-size)
-      (rand-range obstacle-y-min obstacle-y-max)
+      (rand_range (- terrain_size) terrain_size)
+      (rand_range obstacle_y_min obstacle_y_max)
       0))
-  (obstacle-entity.require-transform|.rotate (vec (- (rand) 0.2) (- (rand) 0.2) (- (rand) 0.5)) (rand))
-  (obstacle-entity.require-primitive|.material|.parent "material/rock.ls")
-  (local obstacle-transform (obstacle-entity.require-transform))
-  (set loop-objects:obstacle-transform true)
+  (obstacle_entity.require_transform|.rotate (vec (- (rand) 0.2) (- (rand) 0.2) (- (rand) 0.5)) (rand))
+  (obstacle_entity.require_primitive|.material|.parent "material/rock.ls")
+  (local obstacle_transform (obstacle_entity.require_transform))
+  (set loop_objects:obstacle_transform true)
 
   ; Handle rock variations
-  (local variant (floor (rand-range 1 4)))
-  (local mesh-path (+ "mesh/rock_" variant ".obj"))
-  (obstacle-entity.require-primitive|.material|.mesh mesh-path)
+  (local variant (floor (rand_range 1 4)))
+  (local mesh_path (+ "mesh/rock_" variant ".obj"))
+  (obstacle_entity.require_primitive|.material|.mesh mesh_path)
   (local extent (vec 8 8 32))
-  (obstacle-entity.require-collider|.box extent)
-  (obstacle-entity.require-rigidbody|.kinematic true)
+  (obstacle_entity.require_collider|.box extent)
+  (obstacle_entity.require_rigidbody|.kinematic true)
 
   (+= i 1)
 ))
 
 ; Make background
-(local sprite (entity-make))
-(sprite.require-transform|.move (vec 0 4096 0))
-(sprite.require-primitive|.material|.parent "material/sprite.ls")
-(sprite.require-primitive|.material|.texture 'tex "texture/sunset.png?comp=bc1")
-(sprite.require-primitive|.scale (vec (* 1920 4) 1 (* 1080 4)))
+(local sprite (entity_make))
+(sprite.require_transform|.move (vec 0 4096 0))
+(sprite.require_primitive|.material|.parent "material/sprite.ls")
+(sprite.require_primitive|.material|.texture 'tex "texture/sunset.png?comp=bc1")
+(sprite.require_primitive|.scale (vec (* 1920 4) 1 (* 1080 4)))
 ; Continuously move background with vehicle
-(sprite.require-script|.call (fun (set self.update (fun
-  (self.entity.require-transform|.move-absolute (vec 0 (* current-speed delta) 0))
+(sprite.require_script|.call (fun (set self.update (fun
+  (self.entity.require_transform|.move_absolute (vec 0 (* current_speed delta) 0))
 ))))

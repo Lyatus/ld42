@@ -1,18 +1,18 @@
 (set menu false)
-(if (= current-oasis target-oasis)
+(if (= current_oasis target_oasis)
   (do ; If you won
     (set victory true)
-    (engine-clear-and-read "gameover.ls") 
+    (engine_clear_and_read "gameover.ls")
   )
   (do ; Otherwise load map UI
     ; Start map music
-    (local music-source (entity-make|.add-audio-source))
-    (music-source.stream "audio/map.ogg")
-    (music-source.looping true)
-    (music-source.play)
-    (entity-make|.add-script|.load "mapcamera.ls")
-    
+    (local music_source (entity_make|.add_audio_source))
+    (music_source.stream "audio/map.ogg")
+    (music_source.looping true)
+    (music_source.play)
+    (entity_make|.add_script|.load "mapcamera.ls")
+
     ; Heal
-    (change-health oases:current-oasis.heal)
+    (change_health oases:current_oasis.heal)
   )
 )
