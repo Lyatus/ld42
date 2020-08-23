@@ -1,5 +1,6 @@
 (set self.start (fun (do
   (set self.camera (self.entity.require_camera))
+  (set self.input (self.entity.require_input|.context))
   (set self.ui_hover_sound (self.entity.add_audio_source))
   (set self.ui_select_sound (self.entity.add_audio_source))
   (self.ui_hover_sound.stream "audio/ui_hover.wav")
@@ -87,14 +88,6 @@
       (goto_oasis selected_oasis))
   )))
 )))
-(set self.event (fun e (do
-  (if e.pressed (switch e.button
-    'R (engine_clear_and_read "startup.ls")
-    'MouseLeft
-      (if (>= selected_oasis 0)
-        (self.goto selected_oasis))
-  ))
-)))
 (set self.update (fun (do
   (local prev_selected_oasis selected_oasis)
   (set selected_oasis -1)
@@ -163,6 +156,11 @@
   ; Play interaction sounds
   (if (and (>= selected_oasis 0) (<> selected_oasis prev_selected_oasis))
     (self.ui_hover_sound.play))
+
+  (if (and debug (self.input.get_raw_button_pressed 'R))
+    (engine_clear_and_read "startup.ls"))
+  (if (and (>= selected_oasis 0) (self.input.get_raw_button_pressed 'MouseLeft))
+    (self.goto selected_oasis))
 
   (display_debug)
 )))
