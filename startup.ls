@@ -95,7 +95,7 @@
 (set change_health (fun offset (do
   (set current_health (min base_health (+ current_health offset)))
   (foreach i gui health_gui (do
-    (gui.material|.texture 'tex (+ "texture/health_" (if (<= current_health i) "off" "on") ".png?comp=bc3"))
+    (gui.material|.texture 'tex (+ "texture/health_" (if (<= current_health i) "off" "on") ".png"))
   ))
 )))
 (set create_debug_display (fun entity (do

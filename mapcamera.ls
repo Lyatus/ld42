@@ -67,7 +67,7 @@
   ; Create tutorial
   (set gui (self.entity.add_gui))
   (gui.material|.parent "material/gui_image.ls")
-  (gui.material|.texture 'tex "texture/map_tuto.png?comp=bc3")
+  (gui.material|.texture 'tex "texture/map_tuto.png")
   (gui.viewport_anchor 0.5 0.95)
   (gui.anchor 0.5 1)
 

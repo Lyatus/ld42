@@ -35,7 +35,7 @@
     ; Create race bar
     (set gui (self.entity.add_gui))
     (gui.material|.parent "material/gui_image.ls")
-    (gui.material|.texture 'tex "texture/race_bar.png?comp=bc3")
+    (gui.material|.texture 'tex "texture/race_bar.png")
     (gui.viewport_anchor 0.5 0)
     (gui.anchor 0.5 0)
     (gui.offset 0 100)
@@ -44,7 +44,7 @@
     (set gui (self.entity.add_gui))
     (set self.arrow_gui gui)
     (gui.material|.parent "material/gui_image.ls")
-    (gui.material|.texture 'tex "texture/race_arrow.png?comp=bc3")
+    (gui.material|.texture 'tex "texture/race_arrow.png")
     (gui.viewport_anchor 0.5 0)
     (gui.anchor 0.5 0)
     (gui.offset 0 100)
