@@ -1,2 +1,4 @@
-(self.pipeline ".inline?fragment=shader/texture.frag&vertex=shader/quad.vert&pass=present")
+(self.shader 'fragment "shader/texture.frag")
+(self.shader 'vertex "shader/quad.vert")
+(self.render_pass 'present)
 (self.vertex_count 6)

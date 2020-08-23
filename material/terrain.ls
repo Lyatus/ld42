@@ -1,5 +1,6 @@
 (local size 128)
-(self.pipeline ".inline?fragment=shader/terrain.frag&vertex=shader/terrain.vert")
+(self.shader 'fragment "shader/terrain.frag")
+(self.shader 'vertex "shader/terrain.vert")
 (self.vertex_count (* size size 6))
 (self.texture 'tex "texture/sand.png?comp=bc1")
 (self.texture 'height_tex "texture/sand_noise.jpg")

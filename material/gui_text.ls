@@ -1,3 +1,5 @@
-(self.pipeline ".inline?fragment=shader/font.frag&vertex=shader/font.vert&pass=present")
+(self.shader 'fragment "shader/font.frag")
+(self.shader 'vertex "shader/font.vert")
+(self.render_pass 'present)
 (self.font "font/novaround.ttf")
 (self.color 'color "white")
