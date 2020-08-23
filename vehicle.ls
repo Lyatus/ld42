@@ -100,7 +100,7 @@
   (if (> self.immunity 0) (self.thruster_primitive.scale 0))
 )))
 (set self.event (fun e (do
-  (if (and (= e.type 'COLLISION) (<= self.immunity 0)) (do
+  (if (and (= e.type 'Collision) (<= self.immunity 0)) (do
     (change_health -1)
     (set self.immunity immunity_time)
     (self.hit_sound.play)
