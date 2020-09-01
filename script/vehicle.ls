@@ -9,7 +9,7 @@
   (self.entity.require_primitive|.material|.color 'color immunity_color)
 
   (set self.input (self.entity.require_input|.context))
-  (self.input.set_input_map ((read "input_map.ls")))
+  (self.input.set_input_map ((read "script/input_map.ls")))
 
   (set self.vroom (self.entity.add_audio_source))
   (self.vroom.stream "audio/vroom.wav")
@@ -53,12 +53,12 @@
   (if (<= race_distance 0) (do
     (set race_end (now))
     (+= sandstorm_position (* (- race_end race_start) sandstorm_speed))
-    (engine_clear_and_read "map.ls")
+    (engine_clear_and_read "script/map.ls")
   ))
 
   ; Update race timer
   (if (<= race_timer (- (now) race_start))
-    (engine_clear_and_read "gameover.ls"))
+    (engine_clear_and_read "script/gameover.ls"))
 
   ; Playground limits
   (local position (transform.get_position))
@@ -91,7 +91,7 @@
     (change_health -1)
     (set self.immunity immunity_time)
     (self.hit_sound.play)
-    (if (<= current_health 0) (engine_clear_and_read "gameover.ls")) ; Go back to gameover when dead
+    (if (<= current_health 0) (engine_clear_and_read "script/gameover.ls")) ; Go back to gameover when dead
     (entity_destroy (e.other.entity))
   ))
 )))

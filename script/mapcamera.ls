@@ -1,7 +1,7 @@
 (set self.start (fun (do
   (set self.camera (self.entity.require_camera))
   (set self.input (self.entity.require_input|.context))
-  (self.input.set_input_map ((read "input_map.ls")))
+  (self.input.set_input_map ((read "script/input_map.ls")))
   (set self.ui_hover_sound (self.entity.add_audio_source))
   (set self.ui_select_sound (self.entity.add_audio_source))
   (self.ui_hover_sound.stream "audio/ui_hover.wav")
@@ -151,7 +151,7 @@
     (self.ui_hover_sound.play))
 
   (if (and debug (self.input.get_button_pressed 'Restart))
-    (engine_clear_and_read "startup.ls"))
+    (engine_clear_and_read "script/startup.ls"))
   (if (and (>= selected_oasis 0) (self.input.get_button_pressed 'Continue))
     (self.goto selected_oasis))
 

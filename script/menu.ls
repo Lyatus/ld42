@@ -12,4 +12,4 @@
 (set menu true)
 (set race_distance 4096)
 (set current_speed base_speed)
-(read "race.ls"|)
+(read "script/race.ls"|)

@@ -35,7 +35,7 @@
   ; Make ship
   (local vehicle_entity (entity_make))
   (vehicle_entity.require_transform|.move (vec 0 10 4))
-  (vehicle_entity.require_script|.load "vehicle.ls")
+  (vehicle_entity.require_script|.load "script/vehicle.ls")
 
   ; Make boosts
   (local i 0)
@@ -58,7 +58,7 @@
 ))
 
 ; Make camera
-(entity_make|.add_script|.load "camera.ls")
+(entity_make|.add_script|.load "script/camera.ls")
 
 ; Infinite roll for menu
 (local loop_objects {})

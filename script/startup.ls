@@ -78,7 +78,7 @@
   (set race_timer (oasis_deadline end_oasis))
   (set current_oasis i)
   (set race_start (now))
-  (engine_clear_and_read "race.ls")
+  (engine_clear_and_read "script/race.ls")
 )))
 (set create_health_display (fun entity (do
   (set health_gui {
@@ -124,4 +124,4 @@
   (gui.scale background_scale background_scale)
 )))
 
-(engine_clear_and_read "menu.ls")
+(engine_clear_and_read "script/menu.ls")

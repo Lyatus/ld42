@@ -4,7 +4,7 @@
   (if (not menu) (set self.vehicle_transform (entity_get "vehicle" |.require_transform)))
   (set self.camera (self.entity.require_camera))
   (set self.input (self.entity.require_input|.context))
-  (self.input.set_input_map ((read "input_map.ls")))
+  (self.input.set_input_map ((read "script/input_map.ls")))
   (self.entity.require_audio_listener)
   (local gui)
   (if menu (do
@@ -65,9 +65,9 @@
 )))
 (set self.update (fun (do
   (if (and debug (self.input.get_button_pressed 'Restart))
-    (engine_clear_and_read "startup.ls"))
+    (engine_clear_and_read "script/startup.ls"))
   (if (self.input.get_button_pressed 'Continue)
-    (engine_clear_and_read "map.ls"))
+    (engine_clear_and_read "script/map.ls"))
 )))
 (set self.late_update (fun (do
   ; Update camera field of view to match current speed
