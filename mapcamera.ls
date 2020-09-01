@@ -1,6 +1,7 @@
 (set self.start (fun (do
   (set self.camera (self.entity.require_camera))
   (set self.input (self.entity.require_input|.context))
+  (self.input.set_input_map ((read "input_map.ls")))
   (set self.ui_hover_sound (self.entity.add_audio_source))
   (set self.ui_select_sound (self.entity.add_audio_source))
   (self.ui_hover_sound.stream "audio/ui_hover.wav")
@@ -103,14 +104,8 @@
   ))
 
   ; Gather joystick input
-  (local axis_x 0)
-  (local axis_y 0)
-  (local button_pressed false)
-  (foreach device _ (get_devices) (do
-    (+= axis_x (device.get_axis 'GamepadLeftStickX))
-    (-= axis_y (device.get_axis 'GamepadLeftStickY)) ; Invert because stick Y+ is up
-    (set button_pressed (or button_pressed (device.get_button 'GamepadFaceBottom)))
-  ))
+  (local axis_x (self.input.get_axis 'XAxis))
+  (local axis_y (self.input.get_axis 'YAxis))
   (local joy_dir (normalize (vec axis_x axis_y 0)))
   (if (> (length joy_dir) 0) (do
     (local best_value 0)
@@ -124,8 +119,6 @@
         (set selected_oasis i)
         (set best_value value)))
     )))
-    (if (and button_pressed (>= selected_oasis 0))
-      (self.goto selected_oasis))
   ))
 
   ; Update oases GUIs
@@ -157,9 +150,9 @@
   (if (and (>= selected_oasis 0) (<> selected_oasis prev_selected_oasis))
     (self.ui_hover_sound.play))
 
-  (if (and debug (self.input.get_raw_button_pressed 'R))
+  (if (and debug (self.input.get_button_pressed 'Restart))
     (engine_clear_and_read "startup.ls"))
-  (if (and (>= selected_oasis 0) (self.input.get_raw_button_pressed 'MouseLeft))
+  (if (and (>= selected_oasis 0) (self.input.get_button_pressed 'Continue))
     (self.goto selected_oasis))
 
   (display_debug)

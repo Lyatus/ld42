@@ -3,6 +3,8 @@
   (set self.transform (self.entity.require_transform))
   (if (not menu) (set self.vehicle_transform (entity_get "vehicle" |.require_transform)))
   (set self.camera (self.entity.require_camera))
+  (set self.input (self.entity.require_input|.context))
+  (self.input.set_input_map ((read "input_map.ls")))
   (self.entity.require_audio_listener)
   (local gui)
   (if menu (do
@@ -61,6 +63,12 @@
   ; Create debug gui
   (create_debug_display self.entity)
 )))
+(set self.update (fun (do
+  (if (and debug (self.input.get_button_pressed 'Restart))
+    (engine_clear_and_read "startup.ls"))
+  (if (self.input.get_button_pressed 'Continue)
+    (engine_clear_and_read "map.ls"))
+)))
 (set self.late_update (fun (do
   ; Update camera field of view to match current speed
   (self.camera.perspective (+ 60 (* current_speed 0.085)) 3 4150) ; TWEAK: Relation between speed and FOV
@@ -83,10 +91,4 @@
     (self.arrow_gui.offset (- (* progression 270) 140) 100)
   ))
   (display_debug)
-)))
-(set self.event (fun e (do
-  (if e.pressed (switch e.button
-    'R (engine_clear_and_read "startup.ls")
-    (if menu (engine_clear_and_read "map.ls"))
-  ))
 )))

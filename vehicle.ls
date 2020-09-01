@@ -8,6 +8,9 @@
   (self.entity.require_collider|.box (vec 1 1 1))
   (self.entity.require_primitive|.material|.color 'color immunity_color)
 
+  (set self.input (self.entity.require_input|.context))
+  (self.input.set_input_map ((read "input_map.ls")))
+
   (set self.vroom (self.entity.add_audio_source))
   (self.vroom.stream "audio/vroom.wav")
   (self.vroom.looping true)
@@ -26,30 +29,14 @@
   ; Movement values
   (local transform (self.entity.require_transform))
   (local movement (* delta 128))
-  (local axis_x 0)
-  (local axis_y 0)
-  (local axis_z 0)
-  (local axis_rot_x 0)
-  (local axis_rot_y 0)
-
-  ; Gather joystick input (based on X360 only)
-  (foreach device _ (get_devices) (do
-    (+= axis_x (device.get_axis 'GamepadLeftStickX))
-    (-= axis_z (device.get_axis 'GamepadLeftTrigger))
-    (+= axis_z (device.get_axis 'GamepadRightTrigger))
-  ))
-
-  ; Gather keyboard input
-  (if (or (button_pressed 'Z) (button_pressed 'W)) (+= axis_z 1))
-  (if (or (button_pressed 'Q) (button_pressed 'A)) (-= axis_x 1))
-  (if (button_pressed 'S) (-= axis_z 1))
-  (if (button_pressed 'D) (+= axis_x 1))
+  (local axis_x (self.input.get_axis 'XAxis))
+  (local axis_z (self.input.get_axis 'Throttle))
 
   ; Execute input
   (if (> (abs axis_x) 0.1) (transform.move_absolute (vec (* axis_x movement) 0 0)))
   (+= self.roll (* axis_x 0.1))
 
-  ; Update speed base on race_distance, boost and input
+  ; Update speed based on race_distance, boost and input
   (set current_speed (+ base_speed (* 128 axis_z)))
   (if (< race_distance 128)
     (*= current_speed (/ race_distance 128)))
