@@ -83,8 +83,8 @@
 
   ; Rotation effects
   (*= self.roll 0.8)
-  (transform.set_rotation (vec 0 0 1) (/ 3.14 2))
-  (transform.rotate_absolute (vec 0 -1 0) (+ self.roll (* (position.x) 0.005)))
+  (transform.set_rotation (euler_degrees 0 0 90))
+  (transform.rotate_absolute (euler_radians 0 (- (+ self.roll (* position.x 0.005))) 0))
 
   ; Update immunity
   (-= self.immunity delta)
@@ -95,7 +95,7 @@
   (self.thruster_transform.copy transform)
   (self.thruster_transform.move_absolute (vec 0 -2.9 0))
   (self.thruster_transform.move (vec 0 0 -0.17))
-  (self.thruster_transform.rotate_absolute (vec 0 1 0) (* delta 684486486))
+  (self.thruster_transform.rotate_absolute (euler_radians 0 (* delta 684486486) 0))
   (self.thruster_primitive.scale (* 0.2 (/ current_speed base_speed)))
   (if (> self.immunity 0) (self.thruster_primitive.scale 0))
 )))

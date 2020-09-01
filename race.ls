@@ -9,7 +9,7 @@
 
 ; Make directional light
 (local dirlight_entity (entity_make))
-(dirlight_entity.require_transform|.rotate (vec -0.4 0 1) 2.25)
+(dirlight_entity.require_transform|.rotate (euler_degrees -20 0 130))
 (dirlight_entity.require_primitive|.material|.parent "material/dirlight.ls")
 (dirlight_entity.require_primitive|.material|.scalar 'intensity light_intensity)
 (dirlight_entity.require_primitive|.scale 99999)
@@ -28,7 +28,7 @@
   ; Make end race arch
   (local arch_entity (entity_make))
   (arch_entity.require_transform|.move (vec 0 (+ race_distance 32) 0))
-  (arch_entity.require_transform|.rotate (vec 0 0 1) (/ 3.14 2))
+  (arch_entity.require_transform|.rotate (euler_radians 0 0 (/ 3.14 2)))
   (arch_entity.add_primitive|.material|.parent "material/arch.ls")
   (arch_entity.add_primitive|.material|.parent "material/arch_rocks.ls")
 
@@ -100,7 +100,7 @@
       (rand_range (- terrain_size) terrain_size)
       (rand_range obstacle_y_min obstacle_y_max)
       0))
-  (obstacle_entity.require_transform|.rotate (vec (- (rand) 0.2) (- (rand) 0.2) (- (rand) 0.5)) (rand))
+  (obstacle_entity.require_transform|.rotate (euler_radians (- (rand) 0.5) (- (rand) 0.5) (- (rand) 0.5)))
   (obstacle_entity.require_primitive|.material|.parent "material/rock.ls")
   (local obstacle_transform (obstacle_entity.require_transform))
   (set loop_objects:obstacle_transform true)
