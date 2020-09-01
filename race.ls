@@ -67,7 +67,7 @@
   (set self.camera (entity_get "camera" |.require_transform))
   (set self.update (fun (do
     (foreach loop_object _ self.loop_objects (do
-      (if (< (+ terrain_size (loop_object.get_position|.y)) (self.camera.get_position|.y))
+      (if (< (+ terrain_size (loop_object.get_position).y) (self.camera.get_position).y)
         (loop_object.move_absolute (vec 0 race_distance 0)))
     ))
   )))

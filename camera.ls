@@ -71,9 +71,9 @@
     ; Set camera position relative to vehicle
     (local vehicle_pos (self.vehicle_transform.get_position))
     (self.transform.set_position (vec
-      (* (vehicle_pos.x) 0.8)
-      (- (vehicle_pos.y) 10)
-      (+ 10 (* (- (vehicle_pos.z) 10) 0.5))))
+      (* vehicle_pos.x 0.8)
+      (- vehicle_pos.y 10)
+      (+ 10 (* (- vehicle_pos.z 10) 0.5))))
 
     ; Update GUI
     (local time_left (- race_timer (- (now) race_start)))

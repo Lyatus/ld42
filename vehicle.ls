@@ -76,9 +76,9 @@
   ; Playground limits
   (local position (transform.get_position))
   (set position (vec
-    (clamp (position.x) -64 64)
-    (position.y)
-    (clamp (position.z) 5 16)))
+    (clamp position.x -64 64)
+    position.y
+    (clamp position.z 5 16)))
   (transform.set_position position)
 
   ; Rotation effects
