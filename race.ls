@@ -62,16 +62,16 @@
 
 ; Infinite roll for menu
 (local loop_objects {})
-(if menu (entity_make|.require_script|.call (fun loop_objects (do
-  (set self.loop_objects loop_objects)
-  (set self.camera (entity_get "camera" |.require_transform))
-  (set self.update (fun (do
-    (foreach loop_object _ self.loop_objects (do
-      (if (< (+ terrain_size (loop_object.get_position).y) (self.camera.get_position).y)
+(if menu (do
+  (local o (entity_make|.require_script|.object))
+  (local camera (entity_get "camera" |.require_transform))
+  (set o.update (fun (do
+    (foreach loop_object _ loop_objects (do
+      (if (< (+ terrain_size (loop_object.get_position).y) (camera.get_position).y)
         (loop_object.move_absolute (vec 0 race_distance 0)))
     ))
   )))
-)) loop_objects))
+))
 
 ; Make terrain cells
 (local i 0)
@@ -123,6 +123,6 @@
 (sprite.require_primitive|.material|.texture 'tex "texture/sunset.png?comp=bc1")
 (sprite.require_primitive|.scale (vec (* 1920 4) 1 (* 1080 4)))
 ; Continuously move background with vehicle
-(sprite.require_script|.call (fun (set self.update (fun
+(set (sprite.require_script|.object).update (fun
   (self.entity.require_transform|.move_absolute (vec 0 (* current_speed delta) 0))
-))))
+))
