@@ -37,19 +37,6 @@
   (vehicle_entity.require_transform|.move (vec 0 10 4))
   (vehicle_entity.require_script|.load "script/vehicle.ls")
 
-  ; Make boosts
-  (local i 0)
-  (while (< i boost_count) (do
-    (local boost_entity (entity_make))
-    (boost_entity.require_transform|.move
-      (vec
-        (rand_range (- terrain_size) terrain_size)
-        (+ (* terrain_cell_count (rand_range 0 terrain_size) 2) (* 2 terrain_size))
-        5))
-    (boost_entity.require_script|.load "boost.ls")
-    (+= i 1)
-  ))
-
   ; Start race music
   (local music_source (entity_make|.add_audio_source))
   (music_source.stream "audio/race.ogg")

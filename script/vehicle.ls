@@ -1,5 +1,4 @@
 (set self.immunity -1)
-(set self.boost 0)
 (set self.roll 0)
 (set self.start (fun (do
   (self.entity.require_name|.set "vehicle")
@@ -36,12 +35,11 @@
   (if (> (abs axis_x) 0.1) (transform.move_absolute (vec (* axis_x movement) 0 0)))
   (+= self.roll (* axis_x 0.1))
 
-  ; Update speed based on race_distance, boost and input
+  ; Update speed based on race_distance and input
   (set current_speed (+ base_speed (* 128 axis_z)))
   (if (< race_distance 128)
     (*= current_speed (/ race_distance 128)))
   (set current_speed (max current_speed min_speed))
-  (-= self.boost delta)
   (if (> self.immunity -1)
     (set current_speed (min current_speed (+ base_speed (* 128 (max 0 (- self.immunity)))))))
 
