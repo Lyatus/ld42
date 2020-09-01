@@ -89,7 +89,7 @@
   ; Update immunity
   (-= self.immunity delta)
   (local fragshader (if (< self.immunity 0) "staticmesh" "color"))
-  (self.entity.require_primitive|.material|.pipeline (+ ".inline?fragment=shader/" fragshader ".frag&vertex=shader/staticmesh.vert"))
+  (self.entity.require_primitive|.material|.shader 'fragment (+ "shader/" fragshader ".frag"))
 
   ; Update thruster fire
   (self.thruster_transform.copy transform)
